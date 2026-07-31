@@ -47,7 +47,14 @@ source /opt/ros/humble/setup.bash
 python3 fibonacci_action_server.py
 ```
 
-새 터미널에서(클라이언트 역할):
+새 터미널에서(전용 클라이언트로):
+
+```bash
+source /opt/ros/humble/setup.bash
+python3 fibonacci_action_client.py 5
+```
+
+또는 코드 없이 ROS2 기본 제공 CLI로 바로 호출할 수도 있습니다:
 
 ```bash
 ros2 action send_goal /fibonacci example_interfaces/action/Fibonacci "{order: 5}" --feedback
