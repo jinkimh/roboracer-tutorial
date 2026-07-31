@@ -27,7 +27,14 @@ source /opt/ros/humble/setup.bash
 python3 add_two_ints_server.py
 ```
 
-새 터미널에서(클라이언트 역할):
+새 터미널에서(전용 클라이언트로):
+
+```bash
+source /opt/ros/humble/setup.bash
+python3 add_two_ints_client.py 3 5
+```
+
+또는 코드 없이 ROS2 기본 제공 CLI로 바로 호출할 수도 있습니다:
 
 ```bash
 ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 3, b: 5}"
