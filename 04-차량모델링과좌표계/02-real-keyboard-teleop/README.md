@@ -44,3 +44,11 @@ ros2 run key_teleop commander_node
 ```bash
 ros2 run key_teleop commander_node --ros-args -p speed_forward:=1.5
 ```
+
+## 문제 해결
+
+| 증상 | 원인 | 해결 |
+|---|---|---|
+| 키 입력이 반응 없음 | `keyboard` 노드의 SDL 입력창에 포커스가 없음 | 작은 입력창을 클릭한 뒤 다시 키를 누르세요 |
+| `ros2 topic echo /keydown`에서 예상과 다른 `code` 값이 나옴 | SDL 버전·환경마다 키 코드가 다를 수 있음 | `commander_node.py` 9번째 줄의 `K_UP` 등 상수를 실제로 확인한 코드로 수정 |
+| `/drive`는 발행되는데 차량이 반응 없음 | 드라이버 스택(`bringup_launch.py`)이 아직 안 켜져 있거나, VESC 드라이버가 `/drive`를 구독하지 않음 | [03-driver-stack-bringup](../03-driver-stack-bringup/)으로 먼저 bringup을 실행했는지, `ros2 topic info /drive`로 구독자가 있는지 확인 |

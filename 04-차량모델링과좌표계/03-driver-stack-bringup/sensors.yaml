@@ -1,0 +1,13 @@
+# sensors.yaml — f1tenth_ws/src/f1tenth_system/f1tenth_stack/config/sensors.yaml
+#
+# 책 본문 4.7절 Step 2와 짝을 이루는 예시 설정입니다. 차량에 달린 LiDAR
+# 종류에 맞는 쪽만 남기고, 나머지는 주석 처리하거나 지우세요 — 두 방식을
+# 동시에 켜두면 충돌합니다.
+
+# --- 이더넷 기반 LiDAR (예: Hokuyo 10LX) ---
+ip_address: "192.168.0.10"   # 실제 LiDAR IP로 교체
+# serial_port: "/dev/ttyUSB_LIDAR"
+
+# --- USB 기반 LiDAR (위 이더넷 설정 대신 이 줄만 사용) ---
+# ip_address 항목은 주석 처리하고 아래 줄만 남깁니다.
+# serial_port: "/dev/ttyUSB_LIDAR"   # udev 규칙으로 고정한 장치 이름 권장
