@@ -23,7 +23,7 @@ class WallFollow(Node):
 
         self.integral = 0.0
         self.prev_error = 0.0
-        self.prev_time = self.get_clock().now()
+        self.prev_stamp = None
 
         self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
         self.drive_pub = self.create_publisher(AckermannDriveStamped, '/drive', 10)
@@ -54,13 +54,13 @@ class WallFollow(Node):
         desired = self.get_parameter('desired_distance').value
         error = future_distance - desired
 
-        self.publish_drive(error, sign)
+        stamp = scan.header.stamp.sec + scan.header.stamp.nanosec * 1e-9
+        self.publish_drive(error, sign, stamp)
 
-    def publish_drive(self, error, sign):
-        now = self.get_clock().now()
-        dt = (now - self.prev_time).nanoseconds / 1e9
-        self.prev_time = now
+    def publish_drive(self, error, sign, stamp):
+        dt = (stamp - self.prev_stamp) if self.prev_stamp is not None else 0.02
         dt = dt if dt > 0.0 else 1e-3
+        self.prev_stamp = stamp
 
         kp = self.get_parameter('kp').value
         ki = self.get_parameter('ki').value
