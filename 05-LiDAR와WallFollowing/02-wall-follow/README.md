@@ -41,10 +41,21 @@ python3 wall_follow_node.py
 | `theta_deg` | `50.0` | 두 빔 사이 각도 θ(도) |
 | `kp`, `ki`, `kd` | `1.0`, `0.0`, `0.05` | PID 게인 |
 | `max_speed` | `1.5` | 최대 속도(m/s) — 실차에서는 낮춰서 시작 |
+| `steering_bias_deg` | `0.0` | 조향 결함을 인위적으로 만드는 파라미터(시뮬레이터 전용, Ki 튜닝 연습용) — **실차에서는 항상 0으로 둘 것** |
 
 ```bash
 ros2 param set /wall_follow_node kd 0.15
 ros2 param set /wall_follow_node side right
+```
+
+### Ki 튜닝 연습(시뮬레이터 전용)
+
+`steering_bias_deg`로 조향 결함을 흉내 내 정상상태 오차를 만들고, Ki로 없애봅니다(본문 5.5절 Step 3).
+
+```bash
+ros2 param set /wall_follow_node steering_bias_deg 3.0   # 결함 주입
+ros2 param set /wall_follow_node ki 0.3                   # Ki로 서서히 보정
+ros2 param set /wall_follow_node steering_bias_deg 0.0   # 실습 후 반드시 원복
 ```
 
 ## 실차에서

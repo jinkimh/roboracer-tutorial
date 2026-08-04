@@ -20,6 +20,7 @@ class WallFollow(Node):
         self.declare_parameter('ki', 0.0)
         self.declare_parameter('kd', 0.05)
         self.declare_parameter('max_speed', 1.5)
+        self.declare_parameter('steering_bias_deg', 0.0)
 
         self.integral = 0.0
         self.prev_error = 0.0
@@ -71,7 +72,11 @@ class WallFollow(Node):
         self.prev_error = error
 
         steering = sign * (kp * error + ki * self.integral + kd * derivative)
-        steering = max(-STEERING_LIMIT, min(STEERING_LIMIT, steering))
+
+        # 4.7절의 조향 오프셋 결함을 시뮬레이터에서 재현하기 위한 인위적 편향(기본값 0, 실차에서는
+        # 항상 0으로 둠 — 실제 결함은 파라미터가 아니라 서보 자체에 있기 때문).
+        bias = math.radians(self.get_parameter('steering_bias_deg').value)
+        steering = max(-STEERING_LIMIT, min(STEERING_LIMIT, steering + bias))
 
         max_speed = self.get_parameter('max_speed').value
         angle_deg = abs(math.degrees(steering))
